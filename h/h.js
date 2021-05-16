@@ -193,4 +193,4 @@ const h=(md)=>{
     return html
 }
 
-export default h;
+module.exports = h;
