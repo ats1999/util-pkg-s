@@ -180,7 +180,7 @@ function getHTMLRenderConvertors(linkAttribute, customConvertors) {
     return convertors;
   }
   
-import { Parser, createRenderHTML } from '@toast-ui/toastmark';
+const { Parser, createRenderHTML } = require('@toast-ui/toastmark');
 const parser = new Parser();
 const renderHTML = createRenderHTML({ 
     gfm: true,
