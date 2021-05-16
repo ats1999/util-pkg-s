@@ -31,6 +31,29 @@ export const customHTMLRenderer={
         result.attributes.target = "_blank";
       }
       return result;
+    },
+    codeBlock:(node)=>{
+		  const infoWords = node.info ? node.info.split(/\s+/) : [];
+		  const preClasses = [];
+		  const codeAttrs = {};
+	  
+		  if (node.fenceLength > 3) {
+		    codeAttrs['data-backticks'] = node.fenceLength;
+		  }
+		  if (infoWords.length > 0 && infoWords[0].length > 0) {
+		    const [lang] = infoWords;
+	  
+		    preClasses.push(`lang-${lang} hljs`);
+		    codeAttrs['data-language'] = lang;
+		  }
+	  
+		  return [
+		    { type: 'openTag', tagName: 'pre', classNames: preClasses },
+		    { type: 'openTag', tagName: 'code', attributes: codeAttrs },
+		    { type: 'text', content: node.literal },
+		    { type: 'closeTag', tagName: 'code' },
+		    { type: 'closeTag', tagName: 'pre' }
+		  ];
     }
 }
 

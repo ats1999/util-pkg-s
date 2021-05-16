@@ -55,7 +55,6 @@ export default function E(props) {
     }
     function createPreviewStyleButton(){
         const el = document.createElement("button");
-        // src => https://res.cloudinary.com/bdevg/image/upload/v1610604323/tablet-ipad-svgrepo-com_jgw7ua.svg
         el.innerHTML = `<img src=${'https://res.cloudinary.com/bdevg/image/upload/v1610604323/tablet-ipad-svgrepo-com_jgw7ua.svg'} alt='preview style bbutton'></img>`;
         // make clouser flag, so we can update 
         // previewStyle
@@ -66,6 +65,7 @@ export default function E(props) {
         }
         return el;   
     }
+
     function createFullScreenButton() {
         const el = document.createElement("button");
         // src => https://res.cloudinary.com/bdevg/image/upload/v1610604323/expand-fullscreen-svgrepo-com_uok6le.svg
@@ -76,6 +76,7 @@ export default function E(props) {
         }
         return el;
     }
+    
     useEffect(()=>{
         //create a full screen button
         if(editorRef.current){
