@@ -1,8 +1,4 @@
-const { Parser, createRenderHTML } = require('@toast-ui/toastmark');
-
-// ======================================================= //
-// DEFINE CUSTOMS //
-const customHTMLRenderer={
+export const customHTMLRenderer={
     heading: (node, context) => {
       const { level } = node;
       const tagName = `h${level}`;
@@ -35,6 +31,29 @@ const customHTMLRenderer={
         result.attributes.target = "_blank";
       }
       return result;
+    },
+    codeBlock:(node)=>{
+		  const infoWords = node.info ? node.info.split(/\s+/) : [];
+		  const preClasses = [];
+		  const codeAttrs = {};
+	  
+		  if (node.fenceLength > 3) {
+		    codeAttrs['data-backticks'] = node.fenceLength;
+		  }
+		  if (infoWords.length > 0 && infoWords[0].length > 0) {
+		    const [lang] = infoWords;
+	  
+		    preClasses.push(`lang-${lang} hljs`);
+		    codeAttrs['data-language'] = lang;
+		  }
+	  
+		  return [
+		    { type: 'openTag', tagName: 'pre', classNames: preClasses },
+		    { type: 'openTag', tagName: 'code', attributes: codeAttrs },
+		    { type: 'text', content: node.literal },
+		    { type: 'closeTag', tagName: 'code' },
+		    { type: 'closeTag', tagName: 'pre' }
+		  ];
     }
 }
 
@@ -126,7 +145,7 @@ const baseConvertors = {
     }
   };
   
-  function getHTMLRenderConvertors(linkAttribute, customConvertors) {
+  export function getHTMLRenderConvertors(linkAttribute, customConvertors) {
     const convertors = { ...baseConvertors };
   
     if (linkAttribute) {
@@ -161,17 +180,3 @@ const baseConvertors = {
     return convertors;
   }
   
-
-const parser = new Parser();
-const renderHTML = createRenderHTML({ 
-    gfm: true,
-    convertors:getHTMLRenderConvertors(null,customHTMLRenderer)
-});
-
-const getHtml=(md)=>{
-    const root = parser.parse(md);
-    const html = renderHTML(root);
-    return html
-}
-
-export const h = getHtml;
