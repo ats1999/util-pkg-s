@@ -1,4 +1,4 @@
-export const customHTMLRenderer={
+const customHTMLRenderer={
     heading: (node, context) => {
       const { level } = node;
       const tagName = `h${level}`;
@@ -145,7 +145,7 @@ const baseConvertors = {
     }
   };
   
-  export function getHTMLRenderConvertors(linkAttribute, customConvertors) {
+function getHTMLRenderConvertors(linkAttribute, customConvertors) {
     const convertors = { ...baseConvertors };
   
     if (linkAttribute) {
