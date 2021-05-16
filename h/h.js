@@ -12,4 +12,4 @@ const h=(md)=>{
     return html
 }
 
-export default = h;
+export default h;
