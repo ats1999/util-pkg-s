@@ -1,4 +1,4 @@
-import {customHTMLRenderer,getHTMLRenderConvertors} from "./util/customHTMLRenderer";
+import {customHTMLRenderer,getHTMLRenderConvertors} from "./customHTMLRenderer";
 import { Parser, createRenderHTML } from '@toast-ui/toastmark';
 const parser = new Parser();
 const renderHTML = createRenderHTML({ 
