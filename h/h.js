@@ -1,1 +1,15 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.h=void 0;const{Parser:Parser,createRenderHTML:createRenderHTML}=require("@toast-ui/toastmark"),customHTMLRenderer={heading:(e,t)=>{const{level:r}=e,a=`h${r}`;let n=e.firstChild&&e.firstChild.literal?e.firstChild.literal:"";return n=n.replace(/[^\w\s]/gi," ").trim().replace(/ +/g," ").split(" ").join("-"),t.entering?{type:"openTag",tagName:a,attributes:{id:n}}:{type:"closeTag",tagName:a,attributes:{id:n}}},link:(e,t)=>{const{origin:r,entering:a}=t,n=r();return a&&!n.attributes.href.startsWith("#")&&(n.attributes.target="_blank"),n}},baseConvertors={paragraph:(e,{entering:t,origin:r,options:a})=>a.nodeId?{type:t?"openTag":"closeTag",outerNewLine:!0,tagName:"p"}:r(),softbreak:e=>({type:"html",content:e.prev&&"htmlInline"===e.prev.type&&/<br ?\/?>/.test(e.prev.literal)?"\n":"<br>\n"}),item(e,{entering:t}){if(t){const t={},r=[];return e.listData.task&&(t["data-te-task"]="",r.push("task-list-item"),e.listData.checked&&r.push("checked")),{type:"openTag",tagName:"li",classNames:r,attributes:t,outerNewLine:!0}}return{type:"closeTag",tagName:"li",outerNewLine:!0}},code:e=>[{type:"openTag",tagName:"code",attributes:{"data-backticks":e.tickCount}},{type:"text",content:e.literal},{type:"closeTag",tagName:"code"}],codeBlock(e){const t=e.info?e.info.split(/\s+/):[],r=[],a={};if(e.fenceLength>3&&(a["data-backticks"]=e.fenceLength),t.length>0&&t[0].length>0){const[e]=t;r.push(`lang-${e}`),a["data-language"]=e}return[{type:"openTag",tagName:"pre",classNames:r},{type:"openTag",tagName:"code",attributes:a},{type:"text",content:e.literal},{type:"closeTag",tagName:"code"},{type:"closeTag",tagName:"pre"}]}};function getHTMLRenderConvertors(e,t){const r={...baseConvertors};return e&&(r.link=((t,{entering:r,origin:a})=>{const n=a();return r&&(n.attributes={...n.attributes,...e}),n})),t&&Object.keys(t).forEach(e=>{const a=r[e],n=t[e];r[e]=a?(e,t)=>{const r={...t};return r.origin=(()=>a(e,t)),n(e,r)}:n}),r}const parser=new Parser,renderHTML=createRenderHTML({gfm:!0,convertors:getHTMLRenderConvertors(null,customHTMLRenderer)}),getHtml=e=>{const t=parser.parse(e);return renderHTML(t)},h=getHtml;exports.h=h;
+import {customHTMLRenderer,getHTMLRenderConvertors} from "./util/customHTMLRenderer";
+import { Parser, createRenderHTML } from '@toast-ui/toastmark';
+const parser = new Parser();
+const renderHTML = createRenderHTML({ 
+    gfm: true,
+    convertors:getHTMLRenderConvertors(null,customHTMLRenderer)
+});
+
+const getHtml=(md)=>{
+    const root = parser.parse(md);
+    const html = renderHTML(root);
+    return html
+}
+
+module.exports = getHtml;
