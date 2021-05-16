@@ -6,10 +6,10 @@ const renderHTML = createRenderHTML({
     convertors:getHTMLRenderConvertors(null,customHTMLRenderer)
 });
 
-const getHtml=(md)=>{
+const h=(md)=>{
     const root = parser.parse(md);
     const html = renderHTML(root);
     return html
 }
 
-module.exports = getHtml;
+export default = h;
